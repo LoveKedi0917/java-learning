@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>低代码+后端扩展 · 每周学习任务清单</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --danger: #dc2626;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+  header {
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: #fff;
+    padding: 48px 32px;
+    border-radius: 16px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 20px rgba(37,99,235,0.2);
+  }
+  header h1 { margin: 0 0 12px; font-size: 28px; }
+  header p { margin: 0; opacity: 0.92; font-size: 15px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+  .tag {
+    background: rgba(255,255,255,0.18);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    backdrop-filter: blur(4px);
+  }
+  .section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .section h2 {
+    margin: 0 0 16px;
+    font-size: 20px;
+    color: var(--primary-dark);
+    border-left: 4px solid var(--primary);
+    padding-left: 12px;
+  }
+  .section h3 { margin: 18px 0 10px; font-size: 16px; color: var(--text); }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .phase-badge {
+    background: var(--primary);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .phase-time { color: var(--muted); font-size: 13px; }
+  .week-block {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 14px 0;
+  }
+  .week-block h4 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .week-badge {
+    background: #e0e7ff;
+    color: var(--primary-dark);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .checklist { list-style: none; padding: 0; margin: 8px 0; }
+  .checklist li {
+    padding: 7px 0;
+    border-bottom: 1px dashed var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 14px;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist input[type="checkbox"] {
+    margin-top: 4px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--primary);
+  }
+  .tip {
+    background: #ecfdf5;
+    border-left: 4px solid var(--success);
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .warning {
+    background: #fffbeb;
+    border-left: 4px solid var(--warning);
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .danger {
+    background: #fef2f2;
+    border-left: 4px solid var(--danger);
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .deliverable {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 14px 0;
+  }
+  .deliverable h4 { margin: 0 0 8px; color: #0369a1; font-size: 14px; }
+  .deliverable ul { margin: 6px 0; padding-left: 20px; }
+  .deliverable li { margin-bottom: 4px; font-size: 14px; }
+  .milestone {
+    background: linear-gradient(135deg, #e0e7ff, #f0f9ff);
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .milestone h3 { margin: 0 0 8px; color: var(--primary-dark); font-size: 16px; }
+  .milestone p { margin: 0; color: var(--muted); font-size: 14px; }
+  .progress-bar-container {
+    background: #e2e8f0;
+    border-radius: 999px;
+    height: 12px;
+    margin: 16px 0;
+    overflow: hidden;
+  }
+  .progress-bar {
+    background: linear-gradient(90deg, var(--primary), #7c3aed);
+    height: 100%;
+    border-radius: 999px;
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .stat-card {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+  .stat-card .num { font-size: 24px; font-weight: 700; color: var(--primary); }
+  .stat-card .label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  @media print {
+    body { background: #fff; }
+    .container { padding: 20px; }
+    header { box-shadow: none; }
+    .section { box-shadow: none; page-break-inside: avoid; }
+    .checklist input[type="checkbox"] { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>低代码 + 后端扩展 · 每周学习任务清单</h1>
+    <p>基于宜搭高级认证，补齐 Java / Spring Boot / API 设计 / 微服务基础，打造"低代码平台开发 + 数字化 IT 应用"复合能力。</p>
+    <div class="meta">
+      <span class="tag">目标岗位：低代码平台开发 / 数字化平台工程师 / IT 应用工程师</span>
+      <span class="tag">总周期：约 20 周（5 个月）</span>
+      <span class="tag">每日投入：2-3 小时</span>
+      <span class="tag">周末额外：4-5 小时</span>
+    </div>
+  </header>
+
+  <!-- 全局进度 -->
+  <div class="section">
+    <h2>全局进度总览</h2>
+    <div class="stats">
+      <div class="stat-card">
+        <div class="num">20</div>
+        <div class="label">总周数</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">5</div>
+        <div class="label">学习阶段</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="totalTasks">80+</div>
+        <div class="label">任务项</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="completedCount">0</div>
+        <div class="label">已完成</div>
+      </div>
+    </div>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="globalProgress"></div>
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:13px;">每完成一个任务，勾选下方复选框，进度条自动更新</p>
+  </div>
+
+  <!-- ==================== 阶段一 ==================== -->
+  <div class="section">
+    <h2>阶段一：Java 基础补强（第 1-4 周）</h2>
+    <div class="phase-header">
+      <span class="phase-badge">阶段 1</span>
+      <span class="phase-time">建议周期：4 周 | 每日 2 小时</span>
+    </div>
+    <p><strong>目标：</strong>能写出可运行的 Java 程序，理解面向对象、集合、异常处理、常用数据结构，为 Spring Boot 打基础。</p>
+
+    <!-- 第1周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 1 周</span> 环境搭建 + 基础语法</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>安装 JDK 17（推荐 LTS 版本），配置 JAVA_HOME 环境变量</span></li>
+        <li><input type="checkbox" class="task-check"><span>安装 IntelliJ IDEA（Community 版即可），创建第一个 Hello World 项目</span></li>
+        <li><input type="checkbox" class="task-check"><span>学习 Maven 安装与基础配置，了解 pom.xml 依赖管理</span></li>
+        <li><input type="checkbox" class="task-check"><span>学习 Git 基础命令（init、add、commit、push），注册 GitHub 账号</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握变量、数据类型（基本类型 + 包装类）、运算符</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握流程控制：if-else、switch、for、while、break/continue</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握方法（函数）定义与调用，理解参数传递（值传递）</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握数组定义、遍历、排序（冒泡排序手写一遍）</span></li>
+        <li><input type="checkbox" class="task-check"><span>【练习】写一个控制台程序：输入学生成绩，统计最高分/最低分/平均分</span></li>
+      </ul>
+    </div>
+
+    <!-- 第2周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 2 周</span> 面向对象核心</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>理解类与对象的概念，掌握构造方法、this 关键字</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握封装（private/getter/setter）、方法重载</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握继承（extends）、super 关键字、方法重写（@Override）</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握多态（向上转型/向下转型）、抽象类（abstract）</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握接口（interface）、实现（implements）、默认方法（default）</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握常用类：String、StringBuilder、Math、Date/LocalDate</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握包（package）与导入（import），理解访问修饰符（public/private/protected/default）</span></li>
+        <li><input type="checkbox" class="task-check"><span>【练习】设计一个"员工管理系统"控制台版：定义 Employee 类、Manager 子类，实现薪资计算多态</span></li>
+      </ul>
+    </div>
+
+    <!-- 第3周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 3 周</span> 集合框架 + 异常处理</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>掌握 List 接口：ArrayList、LinkedList 区别与使用场景</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 Set 接口：HashSet、TreeSet 区别</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 Map 接口：HashMap、LinkedHashMap、TreeMap，重点理解 HashMap 底层原理</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握泛型（Generic）基本用法，理解类型擦除</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握异常体系：Throwable → Error / Exception → RuntimeException</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 try-catch-finally、throws、throw、自定义异常类</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 Collections 工具类、Arrays 工具类常用方法</span></li>
+        <li><input type="checkbox" class="task-check"><span>【练习】用集合+异常处理重写员工管理系统，支持增删改查、异常提示</span></li>
+      </ul>
+    </div>
+
+    <!-- 第4周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 4 周</span> 现代 Java + 阶段项目</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>掌握 Lambda 表达式语法，理解函数式接口（Predicate、Consumer、Function、Supplier）</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 Stream API：filter、map、sorted、collect、reduce</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 Optional 避免空指针、LocalDate/LocalTime 日期处理</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 IO 流基础（File、InputStream/OutputStream、Reader/Writer）</span></li>
+        <li><input type="checkbox" class="task-check"><span>了解线程基础：Thread、Runnable、线程池（Executors）</span></li>
+        <li><input type="checkbox" class="task-check"><span>【阶段项目】用 Java 控制台版实现"OA 审批流程模拟系统"</span></li>
+        <li><input type="checkbox" class="task-check"><span>  - 支持创建审批单、提交、审批通过/驳回、查看审批记录</span></li>
+        <li><input type="checkbox" class="task-check"><span>  - 使用集合存储数据，Stream API 做统计筛选</span></li>
+        <li><input type="checkbox" class="task-check"><span>  - 将项目代码上传到 GitHub，作为学习记录</span></li>
+      </ul>
+    </div>
+
+    <div class="milestone">
+      <h3>阶段一里程碑</h3>
+      <p>能独立写出面向对象 Java 程序，熟练使用集合与 Stream API，理解异常处理，代码已上传 GitHub</p>
+    </div>
+  </div>
+
+  <!-- ==================== 阶段二 ==================== -->
+  <div class="section">
+    <h2>阶段二：Spring Boot 入门（第 5-9 周）</h2>
+    <div class="phase-header">
+      <span class="phase-badge">阶段 2</span>
+      <span class="phase-time">建议周期：5 周 | 每日 2.5 小时</span>
+    </div>
+    <p><strong>目标：</strong>能用 Spring Boot 搭建 Web 应用，暴露 REST 接口，连接数据库，完成基础业务功能。</p>
+
+    <!-- 第5周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 5 周</span> Spring 核心 + Spring Boot 入门</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>理解 IOC（控制反转）思想，理解 DI（依赖注入）注解：@Component、@Autowired、@Service、@Repository</span></li>
+        <li><input type="checkbox" class="task-check"><span>理解 AOP（面向切面）基本概念，了解 @Aspect、@Before、@After 注解</span></li>
+        <li><input type="checkbox" class="task-check"><span>使用 Spring Initializr 创建 Spring Boot 项目，理解项目目录结构</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 application.yml 配置文件编写，理解多环境配置（dev/test/prod）</span></li>
+        <li><input type="checkbox" class="task-check"><span>理解 Starter 自动配置原理，了解常见 Starter（web、mysql、mybatis）</span></li>
+        <li><input type="checkbox" class="task-check"><span>【练习】搭建一个空的 Spring Boot 项目，编写一个 HelloController 返回 JSON</span></li>
+      </ul>
+    </div>
+
+    <!-- 第6周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 6 周</span> Web 开发 + REST 接口</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>掌握 @RestController、@RequestMapping、@GetMapping、@PostMapping 注解</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握请求参数接收：@PathVariable、@RequestParam、@RequestBody</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握统一响应封装：Result&lt;T&gt; 类（code、message、data）</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 Controller → Service → Mapper 三层分层架构</span></li>
+        <li><input type="checkbox" class="task-check"><span>【练习】搭建"部门管理"接口：增删改查，返回统一 JSON 格式</span></li>
+        <li><input type="checkbox" class="task-check"><span>【练习】搭建"员工管理"接口：CRUD，部门关联（通过部门ID查找部门名称）</span></li>
+      </ul>
+    </div>
+
+    <!-- 第7周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 7 周</span> 数据库 + MyBatis-Plus</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>安装 MySQL 8.0，创建数据库和表（employee、department），写入测试数据</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 JDBC 连接原理，了解 Druid 连接池配置</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 MyBatis-Plus 基础：BaseMapper、@TableName、@TableId、@TableField</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 MyBatis-Plus 常用 CRUD 方法：insert、deleteById、updateById、selectById、selectList</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握条件构造器：QueryWrapper、LambdaQueryWrapper（条件查询、分页、排序）</span></li>
+        <li><input type="checkbox" class="task-check"><span>【练习】将员工/部门接口的数据层改为 MyBatis-Plus，实现分页查询</span></li>
+      </ul>
+    </div>
+
+    <!-- 第8周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 8 周</span> 接口文档 + 日志 + 单元测试</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>集成 Swagger / Knife4j，配置 API 文档注解（@Api、@ApiOperation、@ApiParam）</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 SLF4J + Logback 日志配置，了解日志级别（DEBUG/INFO/WARN/ERROR）</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 JUnit 5 基础：@Test、@BeforeEach、@AfterEach、断言（assertEquals 等）</span></li>
+        <li><input type="checkbox" class="task-check"><span>【练习】为所有接口补充 Swagger 注解，编写核心 Service 的单元测试</span></li>
+        <li><input type="checkbox" class="task-check"><span>【阶段项目】完成"OA 审批流程后端系统"：员工 CRUD + 部门管理 + 审批任务 CRUD + Swagger 文档</span></li>
+      </ul>
+    </div>
+
+    <!-- 第9周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 9 周</span> 阶段巩固 + 宜搭联动探索</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>回顾阶段一 Java 基础薄弱点，查漏补缺</span></li>
+        <li><input type="checkbox" class="task-check"><span>了解宜搭开放 API 文档，理解宜搭的数据表单接口、流程接口</span></li>
+        <li><input type="checkbox" class="task-check"><span>尝试用 Spring Boot 调用宜搭的 HTTP 接口（获取表单数据/提交数据）</span></li>
+        <li><input type="checkbox" class="task-check"><span>【阶段项目完善】Spring Boot 后端能接收宜搭表单提交的数据，写入 MySQL</span></li>
+        <li><input type="checkbox" class="task-check"><span>将项目代码整理到 GitHub，写好 README 说明</span></li>
+      </ul>
+    </div>
+
+    <div class="milestone">
+      <h3>阶段二里程碑</h3>
+      <p>能独立搭建 Spring Boot 项目，完成 REST 接口开发 + 数据库 CRUD + Swagger 文档，并能与宜搭做基础数据联动</p>
+    </div>
+  </div>
+
+  <!-- ==================== 阶段三 ==================== -->
+  <div class="section">
+    <h2>阶段三：REST 接口规范与工程化（第 10-13 周）</h2>
+    <div class="phase-header">
+      <span class="phase-badge">阶段 3</span>
+      <span class="phase-time">建议周期：4 周 | 每日 2 小时</span>
+    </div>
+    <p><strong>目标：</strong>掌握规范的 RESTful 接口设计，能统一处理参数校验、异常、分页、日志等工程化问题。</p>
+
+    <!-- 第10周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 10 周</span> RESTful 规范 + 参数校验</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>学习 RESTful API 设计规范：资源命名（名词复数）、HTTP 方法语义（GET/POST/PUT/DELETE）</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 HTTP 状态码规范：2xx 成功、3xx 重定向、4xx 客户端错误、5xx 服务端错误</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握参数校验：@Valid、@NotNull、@Size、@Email、自定义校验注解</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握请求 DTO 设计模式，禁止直接用 Entity 接收前端参数</span></li>
+        <li><input type="checkbox" class="task-check"><span>【练习】重构所有接口为规范 RESTful 风格，补充参数校验注解</span></li>
+      </ul>
+    </div>
+
+    <!-- 第11周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 11 周</span> 全局异常处理 + 日志规范</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>掌握 @ControllerAdvice + @ExceptionHandler 全局异常处理</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握自定义业务异常类（BusinessException），统一错误码规范</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握请求日志切面：用 AOP 记录所有接口的请求参数、响应结果、耗时</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握接口响应时间、分页参数的统一封装（PageResult）</span></li>
+        <li><input type="checkbox" class="task-check"><span>【练习】为项目添加全局异常处理和请求日志切面</span></li>
+      </ul>
+    </div>
+
+    <!-- 第12周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 12 周</span> 文件上传 + 定时任务 + 缓存</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>掌握文件上传：MultipartFile、文件存储路径配置、返回访问 URL</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握定时任务：@Scheduled 注解，Cron 表达式编写</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 Spring Cache 基础：@Cacheable、@CacheEvict，集成 Redis 做缓存</span></li>
+        <li><input type="checkbox" class="task-check"><span>【练习】实现审批附件上传接口 + 定时发送审批超时提醒</span></li>
+      </ul>
+    </div>
+
+    <!-- 第13周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 13 周</span> 接口版本管理 + 阶段整合</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>掌握接口版本管理方案：URL 路径版本（/api/v1/）vs 请求头版本</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握接口幂等性设计基础概念</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 Docker 基础：Dockerfile 编写、镜像构建、容器运行</span></li>
+        <li><input type="checkbox" class="task-check"><span>【练习】将 Spring Boot 项目打包成 Docker 镜像并运行</span></li>
+        <li><input type="checkbox" class="task-check"><span>【阶段整合】完善项目：版本管理 + Docker 部署 + 完整 API 文档</span></li>
+      </ul>
+    </div>
+
+    <div class="milestone">
+      <h3>阶段三里程碑</h3>
+      <p>能设计规范的 RESTful 接口，统一处理异常/日志/校验/分页，掌握 Docker 基础部署能力</p>
+    </div>
+  </div>
+
+  <!-- ==================== 阶段四 ==================== -->
+  <div class="section">
+    <h2>阶段四：API 设计与系统集成（第 14-17 周）</h2>
+    <div class="phase-header">
+      <span class="phase-badge">阶段 4</span>
+      <span class="phase-time">建议周期：4 周 | 每日 2 小时</span>
+    </div>
+    <p><strong>目标：</strong>掌握企业应用中最核心的接口对接能力：认证鉴权、第三方调用、Webhook 回调、钉钉接口集成。</p>
+
+    <!-- 第14周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 14 周</span> JWT 认证 + 权限控制</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>理解 JWT（JSON Web Token）结构：Header、Payload、Signature</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 JWT 生成与解析：使用 jjwt 库实现登录生成 Token、拦截器校验 Token</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握基于角色的权限控制（RBAC）：用户-角色-菜单/权限关系模型</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 Spring Security 基础配置（了解即可，重点理解认证流程）</span></li>
+        <li><input type="checkbox" class="task-check"><span>【练习】实现登录接口（生成 JWT）+ 接口拦截器（校验 Token）+ 角色权限注解</span></li>
+      </ul>
+    </div>
+
+    <!-- 第15周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 15 周</span> 第三方接口调用</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>掌握 RestTemplate 基础用法：getForObject、postForObject、exchange</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 WebClient（响应式 HTTP 客户端）基础用法</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 OkHttp 基础用法（了解备选）</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握第三方接口调用的最佳实践：超时配置、重试机制、熔断降级</span></li>
+        <li><input type="checkbox" class="task-check"><span>【练习】调用一个公开 API（如天气查询、IP 查询）并封装为工具类</span></li>
+      </ul>
+    </div>
+
+    <!-- 第16周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 16 周</span> Webhook 回调 + 钉钉接口</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>理解 Webhook 概念：事件驱动、异步通知、回调 URL 设计</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握 Webhook 签名校验机制，防止伪造请求</span></li>
+        <li><input type="checkbox" class="task-check"><span>学习钉钉开放平台：创建企业内部应用、获取 AppKey/AppSecret</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握钉钉消息推送：工作通知消息、群机器人 Webhook 消息</span></li>
+        <li><input type="checkbox" class="task-check"><span>掌握钉钉审批流程 API：发起审批、查询审批状态、回调通知</span></li>
+        <li><input type="checkbox" class="task-check"><span>【练习】Spring Boot 集成钉钉，实现审批完成后自动发送钉钉消息通知</span></li>
+      </ul>
+    </div>
+
+    <!-- 第17周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 17 周</span> 系统集成综合练习</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>梳理宜搭开放 API 文档，理解数据表单 API、流程 API、用户组织 API</span></li>
+        <li><input type="checkbox" class="task-check"><span>实现 Spring Boot → 宜搭：通过 API 同步宜搭表单数据到自建数据库</span></li>
+        <li><input type="checkbox" class="task-check"><span>实现 Spring Boot ← 宜搭：宜搭流程回调通知 Spring Boot 处理业务逻辑</span></li>
+        <li><input type="checkbox" class="task-check"><span>实现钉钉 ← Spring Boot：审批结果通过钉钉推送给相关人员</span></li>
+        <li><input type="checkbox" class="task-check"><span>【阶段整合】完成"宜搭 + Spring Boot + 钉钉"三方联调，记录遇到的问题与解决方案</span></li>
+      </ul>
+    </div>
+
+    <div class="milestone">
+      <h3>阶段四里程碑</h3>
+      <p>能实现 JWT 认证鉴权、调用第三方接口、处理 Webhook 回调、集成钉钉开放平台，具备企业系统集成能力</p>
+    </div>
+  </div>
+
+  <!-- ==================== 阶段五 ==================== -->
+  <div class="section">
+    <h2>阶段五：项目实战 + 微服务基础（第 18-20 周）</h2>
+    <div class="phase-header">
+      <span class="phase-badge">阶段 5</span>
+      <span class="phase-time">建议周期：3 周 | 每日 2-3 小时</span>
+    </div>
+    <p><strong>目标：</strong>完成一个可写进简历的完整项目，了解微服务基础概念，为求职做好准备。</p>
+
+    <!-- 第18周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 18 周</span> 项目实战：低代码流程扩展平台（上）</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>项目规划：确定技术栈（Spring Boot + MyBatis-Plus + MySQL + Swagger + JWT + 钉钉 SDK）</span></li>
+        <li><input type="checkbox" class="task-check"><span>搭建项目骨架：分层架构、统一响应、全局异常、日志切面</span></li>
+        <li><input type="checkbox" class="task-check"><span>设计数据库表：用户表、角色表、审批单表、审批记录表、附件表</span></li>
+        <li><input type="checkbox" class="task-check"><span>实现用户认证模块：登录、注册、JWT Token 生成与校验</span></li>
+        <li><input type="checkbox" class="task-check"><span>实现角色权限模块：RBAC 模型、接口权限注解</span></li>
+        <li><input type="checkbox" class="task-check"><span>实现审批单 CRUD 接口：创建、查询、审批通过/驳回</span></li>
+      </ul>
+    </div>
+
+    <!-- 第19周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 19 周</span> 项目实战：低代码流程扩展平台（下）</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>实现宜搭数据同步：调用宜搭 API 获取表单数据，写入自建数据库</span></li>
+        <li><input type="checkbox" class="task-check"><span>实现审批规则引擎：根据金额、部门、角色做条件分支判断</span></li>
+        <li><input type="checkbox" class="task-check"><span>实现钉钉消息通知：审批待办提醒、超时提醒、处理结果通知</span></li>
+        <li><input type="checkbox" class="task-check"><span>实现宜搭回调接口：接收宜搭流程状态变更通知，更新本地数据</span></li>
+        <li><input type="checkbox" class="task-check"><span>完善 Swagger 文档，补充接口说明和使用示例</span></li>
+        <li><input type="checkbox" class="task-check"><span>编写项目 README：项目介绍、技术栈、架构图、接口文档链接、运行说明</span></li>
+      </ul>
+    </div>
+
+    <!-- 第20周 -->
+    <div class="week-block">
+      <h4><span class="week-badge">第 20 周</span> 微服务基础 + 求职准备</h4>
+      <ul class="checklist">
+        <li><input type="checkbox" class="task-check"><span>学习微服务核心概念：为什么拆分服务、单体 vs 微服务优缺点</span></li>
+        <li><input type="checkbox" class="task-check"><span>了解服务注册与发现（Nacos）、API 网关（Gateway）、远程调用（OpenFeign）</span></li>
+        <li><input type="checkbox" class="task-check"><span>了解配置中心（Nacos Config）、限流熔断（Sentinel）</span></li>
+        <li><input type="checkbox" class="task-check"><span>了解消息队列基础概念（RabbitMQ / Kafka），了解在系统集成中的作用</span></li>
+        <li><input type="checkbox" class="task-check"><span>整理 GitHub 项目，确保代码整洁、README 完善、有截图演示</span></li>
+        <li><input type="checkbox" class="task-check"><span>修改简历：突出"宜搭高级认证 + Spring Boot 后端扩展 + 系统集成"能力</span></li>
+        <li><input type="checkbox" class="task-check"><span>开始投递苏州外企/大型制造业的低代码平台开发、数字化平台工程师岗位</span></li>
+      </ul>
+    </div>
+
+    <div class="milestone">
+      <h3>阶段五里程碑（最终目标）</h3>
+      <p>完成一个完整的"低代码流程扩展平台"项目，具备面试演示能力；掌握微服务基础概念；简历已准备好，开始投递求职</p>
+    </div>
+  </div>
+
+  <!-- ==================== 附录 ==================== -->
+  <div class="section">
+    <h2>附录：推荐学习资源汇总</h2>
+
+    <h3>视频课程（免费为主）</h3>
+    <ul class="checklist">
+      <li><input type="checkbox" class="task-check"><span>Java 基础：尚硅谷 Java 基础教程（B站免费）</span></li>
+      <li><input type="checkbox" class="task-check"><span>Spring Boot：尚硅谷 Spring Boot 教程（B站免费）</span></li>
+      <li><input type="checkbox" class="task-check"><span>Spring Cloud：尚硅谷 Spring Cloud Alibaba 教程（B站免费）</span></li>
+      <li><input type="checkbox" class="task-check"><span>MyBatis-Plus：官方文档 + B站教程</span></li>
+      <li><input type="checkbox" class="task-check"><span>钉钉开放平台：钉钉开发者文档（open.dingtalk.com）</span></li>
+    </ul>
+
+    <h3>书籍推荐</h3>
+    <ul class="checklist">
+      <li><input type="checkbox" class="task-check"><span>《Head First Java》—— 零基础入门，趣味性强</span></li>
+      <li><input type="checkbox" class="task-check"><span>《Java 核心技术卷1》—— 系统学习 Java 基础</span></li>
+      <li><input type="checkbox" class="task-check"><span>《Spring Boot 实战》—— 快速上手 Spring Boot 开发</span></li>
+      <li><input type="checkbox" class="task-check"><span>《Spring Cloud 微服务实战》—— 理解微服务组件</span></li>
+    </ul>
+
+    <h3>在线文档与工具</h3>
+    <ul class="checklist">
+      <li><input type="checkbox" class="task-check"><span>Spring Boot 官方文档：https://spring.io/projects/spring-boot</span></li>
+      <li><input type="checkbox" class="task-check"><span>MyBatis-Plus 官方文档：https://baomidou.com</span></li>
+      <li><input type="checkbox" class="task-check"><span>钉钉开放平台：https://open.dingtalk.com</span></li>
+      <li><input type="checkbox" class="task-check"><span>宜搭开放 API 文档：宜搭开发者中心</span></li>
+      <li><input type="checkbox" class="task-check"><span>GitHub：https://github.com（代码托管）</span></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>学习原则与注意事项</h2>
+    <div class="tip">
+      <strong>30% 看教程 + 70% 动手写代码：</strong>不要陷入"只看不练"的陷阱。每学一个概念，立刻写代码验证。
+    </div>
+    <div class="warning">
+      <strong>不要一开始就深入底层原理：</strong>你的目标是"低代码+后端扩展"，不是成为纯 Java 架构师。理解概念和使用场景即可。
+    </div>
+    <div class="danger">
+      <strong>不要做与职业方向无关的项目：</strong>围绕 OA、审批、员工、流程场景练习，不要做电商、博客、社交 App。
+    </div>
+    <div class="tip">
+      <strong>代码必须上传 GitHub：</strong>这是你面试时最有力的作品展示。确保 README 写清楚项目介绍、技术栈和运行方式。
+    </div>
+    <div class="warning">
+      <strong>面试重点不是算法：</strong>企业更关心你能不能把系统接起来、能不能做系统集成。把 API 设计和系统集成能力练扎实。
+    </div>
+  </div>
+
+  <footer>
+    <p>低代码 + 后端扩展 · 每周学习任务清单 | 基于宜搭高级认证 | 总周期约 20 周（5 个月）</p>
+  </footer>
+
+</div>
+
+<script>
+  // 全局进度条逻辑
+  const checkboxes = document.querySelectorAll('.task-check');
+  const progressBar = document.getElementById('globalProgress');
+  const completedCount = document.getElementById('completedCount');
+
+  function updateProgress() {
+    const total = checkboxes.length;
+    const checked = document.querySelectorAll('.task-check:checked').length;
+    const percent = Math.round((checked / total) * 100);
+    progressBar.style.width = percent + '%';
+    completedCount.textContent = checked + ' / ' + total;
+    // 保存到 localStorage
+    const state = [];
+    checkboxes.forEach((cb, i) => {
+      if (cb.checked) state.push(i);
+    });
+    localStorage.setItem('roadmap_progress', JSON.stringify(state));
+  }
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', updateProgress);
+  });
+
+  // 加载已保存的进度
+  window.addEventListener('DOMContentLoaded', () => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('roadmap_progress') || '[]');
+      saved.forEach(index => {
+        if (checkboxes[index]) checkboxes[index].checked = true;
+      });
+      updateProgress();
+    } catch(e) {}
+  });
+</script>
+
+</body>
+</html>
